@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Ads/IAB size declaration -->
+  <meta name="ad.size" content="width=300,height=600" />
+  <title>300x600 Hotspot Banner</title>
+  <style>
+    /* Reset */
+    html,body { margin:0; padding:0; }
+    * { box-sizing: border-box; }
+
+    /* Banner container */
+    .banner {
+      position: relative;
+      width: 300px;
+      height: 600px;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: #0b0b0b;
+      background: radial-gradient(120% 80% at 50% 20%, #f5f7ff 0%, #e6ecff 35%, #d9e6ff 60%, #cfe0ff 100%);
+    }
+
+    /* Decorative elements */
+    .hero {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(180px 180px at 240px 80px, rgba(255,255,255,.9), rgba(255,255,255,0) 60%),
+        radial-gradient(160px 160px at 40px 360px, rgba(255,255,255,.85), rgba(255,255,255,0) 60%);
+    }
+
+    .content {
+      position: absolute; inset: 0; padding: 16px; pointer-events: none;
+    }
+
+    .logo { font-weight: 800; letter-spacing: .4px; font-size: 14px; opacity: .9; }
+
+    .headline { margin: 16px 0 10px; font-size: 22px; line-height: 1.15; font-weight: 800; max-width: 260px; }
+    .subcopy { font-size: 13px; opacity: .85; max-width: 260px; }
+
+    .cta {
+      position: absolute; left: 16px; bottom: 16px; pointer-events: none;
+      background: #111; color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 13px; font-weight: 700;
+      box-shadow: 0 8px 18px rgba(0,0,0,.18); text-transform: uppercase; letter-spacing: .6px;
+    }
+
+    /* General exit area (click anywhere else) */
+    .default-exit {
+      position: absolute; inset: 0; cursor: pointer; outline: none; border: 0; background: transparent;
+      z-index: 1; /* behind hotspots */
+    }
+
+    /* Hotspots */
+    .hotspot {
+      position: absolute; width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid #fff; background: rgba(15, 76, 192, .9); box-shadow: 0 8px 16px rgba(15,76,192,.35);
+      display: grid; place-items: center; color:#fff; font-weight: 800; font-size: 14px; cursor: pointer;
+      z-index: 2; /* over default exit */
+    }
+    .hotspot:focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+
+    /* Tooltip (placed inside each hotspot) */
+    .tip {
+      position: absolute; left: 50%; transform: translate(-50%, -8px); bottom: 38px; min-width: 160px;
+      background: #111; color: #fff; padding: 8px 10px; border-radius: 10px; font-size: 12px; line-height: 1.25;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .18s ease, transform .18s ease;
+      text-align: center;
+      white-space: normal; max-width: 220px;
+    }
+    .tip::after {
+      content: ""; position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%);
+      width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #111;
+    }
+    .hotspot:hover .tip,
+    .hotspot:focus .tip,
+    .hotspot:focus-visible .tip {
+      opacity: 1; transform: translate(-50%, -12px);
+    }
+
+    /* Subtle pulse to draw attention */
+    .hotspot::before {
+      content: ""; position: absolute; inset: -8px; border-radius: 50%; background: rgba(15, 76, 192, .25);
+      animation: pulse 1.8s ease-in-out infinite; z-index: -1;
+    }
+    @keyframes pulse { 0% { transform: scale(.9); opacity: .7 } 70% { transform: scale(1.15); opacity: 0 } 100% { transform: scale(.9); opacity: 0 } }
+
+    /* Small helper labels (optional) */
+    .label { position: absolute; top: 16px; right: 16px; font-size: 11px; background: rgba(255,255,255,.6); padding: 4px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="banner" role="img" aria-label="Promotional banner with interactive hotspots">
+    <!-- General click area (everywhere except on hotspots) -->
+    <button id="defaultExit" class="default-exit" aria-label="Open advertiser site" title="Open advertiser site"></button>
+
+    <!-- Visuals / copy -->
+    <div class="hero" aria-hidden="true"></div>
+    <div class="content" aria-hidden="true">
+      <div class="logo">YourBrand</div>
+      <div class="headline">Discover the features customers love</div>
+      <div class="subcopy">Hover or focus the dots to learn more. Click anywhere else to visit the site.</div>
+      <div class="cta">Learn more</div>
+      <div class="label">300×600</div>
+    </div>
+
+    <!-- Hotspot 1 -->
+    <button class="hotspot" id="hs1" style="left: 42px; top: 180px;" aria-label="Hotspot 1: Fast setup" aria-describedby="tip1">
+      1
+      <span class="tip" id="tip1" role="tooltip">Fast setup in minutes</span>
+    </button>
+
+    <!-- Hotspot 2 -->
+    <button class="hotspot" id="hs2" style="left: 208px; top: 260px;" aria-label="Hotspot 2: Smart automation" aria-describedby="tip2">
+      2
+      <span class="tip" id="tip2" role="tooltip">Smart automation saves time</span>
+    </button>
+
+    <!-- Hotspot 3 -->
+    <button class="hotspot" id="hs3" style="left: 136px; top: 380px;" aria-label="Hotspot 3: 24/7 support" aria-describedby="tip3">
+      3
+      <span class="tip" id="tip3" role="tooltip">24/7 support from real people</span>
+    </button>
+  </div>
+
+  <script>
+    /**
+     * CLICK-THROUGH SETUP
+     *
+     * Most ad servers (Google Ads/CM360, etc.) inject clickTag variables. We support a few common names.
+     * If your platform uses a different pattern, map it here.
+     */
+    (function initClickTags() {
+      // Default URLs for local testing. Ad server will override these at runtime.
+      window.clickTag  = window.clickTag  || 'https://example.com/default';
+      window.clickTAG  = window.clickTAG  || window.clickTag; // alias
+      window.clickTag1 = window.clickTag1 || 'https://example.com/hotspot-1';
+      window.clickTag2 = window.clickTag2 || 'https://example.com/hotspot-2';
+      window.clickTag3 = window.clickTag3 || 'https://example.com/hotspot-3';
+    })();
+
+    // Utility to open a URL in a new tab using the standard pattern
+    function openExit(url) {
+      try {
+        window.open(url, '_blank');
+      } catch (e) {
+        // As a fallback, update location
+        location.href = url;
+      }
+    }
+
+    // GENERAL EXIT (click anywhere else)
+    document.getElementById('defaultExit').addEventListener('click', function (e) {
+      openExit(window.clickTag || window.clickTAG);
+    });
+    // Keyboard access for default exit
+    document.getElementById('defaultExit').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openExit(window.clickTag || window.clickTAG); }
+    });
+
+    // HOTSPOT-SPECIFIC EXITS
+    var hs1 = document.getElementById('hs1');
+    var hs2 = document.getElementById('hs2');
+    var hs3 = document.getElementById('hs3');
+
+    [
+      [hs1, 'clickTag1'],
+      [hs2, 'clickTag2'],
+      [hs3, 'clickTag3']
+    ].forEach(function([el, tag]){
+      el.addEventListener('click', function(e){
+        e.stopPropagation(); // prevent default area click
+        openExit(window[tag]);
+      });
+      el.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); openExit(window[tag]); }
+      });
+      // Touch support: tap once shows tooltip, tap again opens. Simple heuristic.
+      var tapped = false;
+      el.addEventListener('touchend', function(e){
+        if (!tapped) {
+          tapped = true; el.classList.add('touch-show');
+          setTimeout(function(){ tapped = false; el.classList.remove('touch-show'); }, 1200);
+        } else {
+          e.stopPropagation(); openExit(window[tag]);
+        }
+      });
+    });
+
+    // Optional: prevent scrolling in some in-app browsers
+    document.addEventListener('touchmove', function(e){ e.preventDefault(); }, { passive: false });
+  </script>
+</body>
+</html>
